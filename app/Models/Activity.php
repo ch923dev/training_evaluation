@@ -13,7 +13,7 @@ class Activity extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'venue', 'facilitator', 'date', 'password'];
+    protected $fillable = ['title', 'venue', 'facilitator', 'date', 'key'];
 
     public function evaluation_forms()
     {

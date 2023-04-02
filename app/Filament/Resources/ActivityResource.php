@@ -10,6 +10,7 @@ use App\Models\Section;
 use App\Models\User;
 use Carbon\Carbon;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -17,9 +18,13 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Webbingbrasil\FilamentDateFilter\DateFilter;
+
+
 
 class ActivityResource extends Resource
 {
@@ -37,9 +42,10 @@ class ActivityResource extends Resource
                         TextInput::make('venue'),
                         TextInput::make('facilitator'),
                     ])->columns(2),
-                    TextInput::make('created_at')
+                    TextInput::make('date')
                         ->label('Date of Training')
                         ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('m-d-Y')),
+                    TextInput::make('key')
 
                 ])->columns(1)
             );
@@ -49,12 +55,18 @@ class ActivityResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title'),
+                TextColumn::make('title')
+                    ->searchable(),
                 TextColumn::make('venue'),
                 TextColumn::make('facilitator'),
+                TextColumn::make('date')
+                    ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('m-d-Y'))
+
             ])
             ->filters([
-                //
+                DateFilter::make('date')
+                    ->label(__('Created At'))
+                    ->useColumn('date')
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

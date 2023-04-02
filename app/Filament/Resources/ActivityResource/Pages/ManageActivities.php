@@ -6,6 +6,7 @@ use App\Filament\Resources\ActivityResource;
 use App\Models\Role;
 use App\Models\User;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -14,6 +15,7 @@ use Filament\Forms\Components\Wizard\Step;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ManageRecords;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ManageActivities extends ManageRecords
 {
@@ -33,10 +35,11 @@ class ManageActivities extends ManageRecords
                                 ->required(),
                             TextInput::make('facilitator')
                                 ->required(),
-                            TextInput::make('Date')
+                            DatePicker::make('date')
                                 ->required(),
-                            TextInput::make('password')
-                                ->type('password')
+                            TextInput::make('key')
+                                ->default(Str::random(8))
+                                ->disabled()
                                 ->required(),
                         ]),
                     Step::make('Questions')
@@ -55,7 +58,7 @@ class ManageActivities extends ManageRecords
                                                 Select::make('type')
                                                     ->options([
                                                         'rating' => 'Rating',
-                                                        'question' => 'Question'
+                                                        'question' => 'Textual Feedback'
                                                     ])
                                             ])->columns(2)
                                         ])

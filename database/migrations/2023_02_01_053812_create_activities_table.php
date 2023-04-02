@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('venue');
             $table->string('facilitator');
-            $table->string('date');
-            $table->string('password')->nullable();
+            $table->date('date');
+            $table->string('key');
             $table->timestamps();
         });
     }

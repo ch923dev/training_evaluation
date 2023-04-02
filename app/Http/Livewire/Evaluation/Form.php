@@ -12,6 +12,7 @@ use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
@@ -89,11 +90,13 @@ class Form extends Component implements Forms\Contracts\HasForms
                         ->schema([
                             Group::make([
                                 Placeholder::make('question')
-                                    ->content(fn ($record) => $record->question),
-                                Select::make('answers_rating')
-                                    ->label('Rating')
+                                    ->content(fn ($record) => $record->question)
+                                    ->columnSpanFull(),
+                                Placeholder::make('')
+                                    ->columnSpan(1),
+                                Radio::make('answers_rating')
                                     ->visible(fn ($record) => $record->type === 'rating')
-                                    ->placeholder('Select Rating')
+                                    ->label('Rating')
                                     ->options([
                                         '0' => '0',
                                         '1' => '1',
@@ -102,7 +105,9 @@ class Form extends Component implements Forms\Contracts\HasForms
                                         '4' => '4',
                                         '5' => '5',
                                     ])
-                            ])->columns(1),
+                                    ->inline()
+                                    ->columnSpan(2),
+                            ])->columns(3),
                             TextInput::make('answers_questions')
                                 ->label('Answer')
                                 ->visible(fn ($record) => $record->type != 'rating')
