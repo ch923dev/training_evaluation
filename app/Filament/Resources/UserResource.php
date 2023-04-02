@@ -30,10 +30,16 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name'),
-                TextInput::make('email'),
+                TextInput::make('name')
+                    ->required(),
                 Select::make('role_id')
-                    ->relationship('role','role'),
+                    ->required()
+                    ->relationship('role', 'role'),
+                TextInput::make('email')
+                    ->required(),
+                TextInput::make('password')
+                    ->password(),
+
             ]);
     }
 
@@ -62,15 +68,15 @@ class UserResource extends Resource
     }
     public static function canViewAny(): bool
     {
-        return Auth::user()->role_id === Role::where('role', 'Admin')->first()->id;
+        return User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id;
     }
     public static function canCreate(): bool
     {
-        return Auth::user()->role_id === Role::where('role', 'Admin')->first()->id;
+        return User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id;
     }
     public static function canDeleteAny(): bool
     {
-        return Auth::user()->role_id === Role::where('role', 'Admin')->first()->id;
+        return User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id;
     }
     public static function getRelations(): array
     {

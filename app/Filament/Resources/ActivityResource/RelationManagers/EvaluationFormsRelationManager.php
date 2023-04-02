@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ActivityResource\RelationManagers;
 
+use App\Filament\Widgets\BlogPostsChart;
 use App\Models\EvaluationAnswer;
 use Filament\Forms;
 use Filament\Resources\Form;

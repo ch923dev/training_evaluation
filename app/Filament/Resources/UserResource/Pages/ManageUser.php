@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Pages\ManageRecords;
+use Illuminate\Support\Facades\Hash;
 
 class ManageUsers extends ManageRecords
 {
@@ -15,6 +16,10 @@ class ManageUsers extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
+                ->mutateFormDataUsing(function ($data) {
+                    $data['password'] = $data['password'] ? Hash::make($data['password']) : Hash::make('password');
+                    return $data;
+                })
                 ->disableCreateAnother(),
         ];
     }

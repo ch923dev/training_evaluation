@@ -114,7 +114,6 @@ class Form extends Component implements Forms\Contracts\HasForms
     }
     public function submit() //KINI ANG FUNCTION NA PUBLIC MAGAMIT SA CALL ON FUNCTION
     {
-        // dd($this->form->getLivewire());
         $total_rating = 0;
         foreach ($this->sections as $value) {
             foreach ($value['questions'] as $answers) {
@@ -154,9 +153,6 @@ class Form extends Component implements Forms\Contracts\HasForms
             'remarks' => '',
             'evaluator' => '',
         ]);
-        /*YAWA LIBOG KAAYU BAY
-                            UNSAON MANI PAG SABOT SHET!
-                                 */
     }
     protected function getFormModel(): Activity //KINI ANG FUNCTION NA PROTECTED!!
     {
@@ -164,6 +160,6 @@ class Form extends Component implements Forms\Contracts\HasForms
     }
     public function render() //KINI ANG FUNCTION NA PUBLIC MAGAMIT SA CALL ON FUNCTION
     {
-        return view('livewire.evaluation.form');
+        return view('livewire.evaluations.form');
     }
 }

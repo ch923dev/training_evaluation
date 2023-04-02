@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\User;
 
 class RoleResource extends Resource
 {
@@ -55,11 +56,11 @@ class RoleResource extends Resource
     }
     public static function canViewAny(): bool
     {
-        return Auth::user()->role_id === Role::where('role', 'Admin')->first()->id;
+        return User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id;
     }
     public static function canCreate(): bool
     {
-        return Auth::user()->role_id === Role::where('role', 'Admin')->first()->id;
+        return User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id;
     }
     public static function getRelations(): array
     {

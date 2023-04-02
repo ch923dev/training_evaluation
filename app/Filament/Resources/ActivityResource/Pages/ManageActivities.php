@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\ActivityResource\Pages;
 
 use App\Filament\Resources\ActivityResource;
+use App\Models\Role;
+use App\Models\User;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Repeater;
@@ -11,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Illuminate\Support\Facades\Auth;
 
 class ManageActivities extends ManageRecords
 {
@@ -20,6 +23,7 @@ class ManageActivities extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
+                ->visible(User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id)
                 ->steps([
                     Step::make('Activity')
                         ->schema([
@@ -28,6 +32,11 @@ class ManageActivities extends ManageRecords
                             TextInput::make('venue')
                                 ->required(),
                             TextInput::make('facilitator')
+                                ->required(),
+                            TextInput::make('Date')
+                                ->required(),
+                            TextInput::make('password')
+                                ->type('password')
                                 ->required(),
                         ]),
                     Step::make('Questions')

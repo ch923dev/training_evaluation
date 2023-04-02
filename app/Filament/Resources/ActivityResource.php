@@ -7,6 +7,7 @@ use App\Filament\Resources\ActivityResource\RelationManagers;
 use App\Models\Activity;
 use App\Models\Role;
 use App\Models\Section;
+use App\Models\User;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
@@ -37,7 +38,7 @@ class ActivityResource extends Resource
                         TextInput::make('facilitator'),
                     ])->columns(2),
                     TextInput::make('created_at')
-                        ->label('Date of Venue')
+                        ->label('Date of Training')
                         ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('m-d-Y')),
 
                 ])->columns(1)
@@ -50,22 +51,28 @@ class ActivityResource extends Resource
             ->columns([
                 TextColumn::make('title'),
                 TextColumn::make('venue'),
+                TextColumn::make('facilitator'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id),
+
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->visible(User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id),
+
             ]);
     }
     public static function canCreate(): bool
     {
-        return Auth::user()->role_id === Role::where('role', 'Admin')->first()->id;
+        return User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id;
     }
     public static function getRelations(): array
     {
