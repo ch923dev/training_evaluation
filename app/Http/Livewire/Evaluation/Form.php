@@ -158,6 +158,7 @@ class Form extends Component implements Forms\Contracts\HasForms
             'remarks' => '',
             'evaluator' => '',
         ]);
+        redirect(route('evaluation-list'));
     }
     protected function getFormModel(): Activity //KINI ANG FUNCTION NA PROTECTED!!
     {

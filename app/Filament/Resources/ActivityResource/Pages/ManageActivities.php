@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ActivityResource\Pages;
 use App\Filament\Resources\ActivityResource;
 use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
@@ -36,6 +37,7 @@ class ManageActivities extends ManageRecords
                             TextInput::make('facilitator')
                                 ->required(),
                             DatePicker::make('date')
+                                ->minDate(Carbon::today())
                                 ->required(),
                             TextInput::make('key')
                                 ->default(Str::random(8))

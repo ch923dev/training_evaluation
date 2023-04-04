@@ -25,7 +25,7 @@ class ListActivities extends Component implements HasTable
 
     protected function getTableQuery(): Builder
     {
-        return Activity::query();
+        return Activity::whereDate('date','=',Carbon::today()->toDateString());
     }
 
     protected function getTableColumns(): array
@@ -40,13 +40,6 @@ class ListActivities extends Component implements HasTable
         ];
     }
 
-    protected function getTableFilters(): array
-    {
-        return [
-            DateFilter::make('date')
-                ->useColumn('date')
-        ];
-    }
 
     protected function getTableActions(): array
     {

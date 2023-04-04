@@ -17,6 +17,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
@@ -69,12 +70,13 @@ class ActivityResource extends Resource
                     ->useColumn('date')
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make()
-                    ->visible(User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id),
-                Tables\Actions\DeleteAction::make()
-                    ->visible(User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id),
-
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->visible(User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id),
+                    Tables\Actions\DeleteAction::make()
+                        ->visible(User::find(auth()->user()->id)->role_id === Role::where('role', 'Admin')->first()->id),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make()
