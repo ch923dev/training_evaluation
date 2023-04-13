@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\College;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->date('date');
             $table->string('key');
             $table->timestamps();
+            $table->foreignIdFor(College::class);
             $table->softDeletes();
         });
     }

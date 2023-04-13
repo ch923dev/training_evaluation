@@ -20,6 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
@@ -61,13 +62,16 @@ class ActivityResource extends Resource
                 TextColumn::make('venue'),
                 TextColumn::make('facilitator'),
                 TextColumn::make('date')
-                    ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('m-d-Y'))
+                    ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('m-d-Y')),
+                TextColumn::make('college.name')
 
             ])
             ->filters([
                 DateFilter::make('date')
                     ->label(__('Created At'))
-                    ->useColumn('date')
+                    ->useColumn('date'),
+                SelectFilter::make('college')
+                    ->relationship('college','name')
             ])
             ->actions([
                 ActionGroup::make([

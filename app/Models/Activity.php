@@ -14,7 +14,7 @@ class Activity extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'venue', 'facilitator', 'date', 'key'];
+    protected $fillable = ['title', 'venue', 'facilitator', 'date', 'key','college_id'];
 
     public function evaluation_forms()
     {
@@ -27,5 +27,9 @@ class Activity extends Model
     public function questions()
     {
         return $this->hasManyThrough(Question::class, Section::class);
+    }
+    public function college() 
+    {
+        return $this->belongsTo(College::class);
     }
 }

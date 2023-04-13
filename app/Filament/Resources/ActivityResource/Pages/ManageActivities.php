@@ -43,6 +43,9 @@ class ManageActivities extends ManageRecords
                                 ->default(Str::random(8))
                                 ->disabled()
                                 ->required(),
+                            Select::make('college_id')
+                                ->relationship('college','name')
+                                ->required()
                         ]),
                     Step::make('Questions')
                         ->schema([
