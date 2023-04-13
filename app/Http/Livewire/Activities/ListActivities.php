@@ -54,14 +54,14 @@ class ListActivities extends Component implements HasTable
                             ->send();
                     } else {
                         redirect(route('evaluation-form', ['activity' => $record]));
-                        // url();
+                       
                     }
                 })
                 ->form([
                     TextInput::make('key')
                         ->required()
                 ])
-                // ->url(fn (Activity $record): string => route('evaluation-form', ['activity' => $record]))
+                
                 ->button()
 
         ];
@@ -78,10 +78,5 @@ class ListActivities extends Component implements HasTable
     {
         return view('livewire.activities.list-activities');
     }
-    // protected function getTableRecordUrlUsing(): Closure
-    // {
-
-    //     // return fn(Model $record): string => route('evaluation-list');
-    //     return fn (Activity $record): string => route('evaluation-form', ['activity' => $record]);
-    // }
+    
 }

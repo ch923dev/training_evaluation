@@ -117,7 +117,7 @@ class Form extends Component implements Forms\Contracts\HasForms
             TextInput::make('remarks'),
         ];
     }
-    public function submit() //KINI ANG FUNCTION NA PUBLIC MAGAMIT SA CALL ON FUNCTION
+    public function submit() 
     {
         $total_rating = 0;
         foreach ($this->sections as $value) {
@@ -160,12 +160,13 @@ class Form extends Component implements Forms\Contracts\HasForms
         ]);
         redirect(route('evaluation-list'));
     }
-    protected function getFormModel(): Activity //KINI ANG FUNCTION NA PROTECTED!!
+    protected function getFormModel(): Activity 
     {
         return $this->activity;
     }
-    public function render() //KINI ANG FUNCTION NA PUBLIC MAGAMIT SA CALL ON FUNCTION
+    public function render() 
     {
         return view('livewire.evaluations.form');
     }
+
 }

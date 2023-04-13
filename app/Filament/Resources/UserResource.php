@@ -35,6 +35,7 @@ class UserResource extends Resource
                 Select::make('role_id')
                     ->required()
                     ->relationship('role', 'role'),
+
                 TextInput::make('email')
                     ->required(),
                 TextInput::make('password')
