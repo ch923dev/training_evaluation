@@ -28,7 +28,8 @@ class UpcomingTrainings extends BaseWidget
             TextColumn::make('venue'),
             TextColumn::make('facilitator'),
             TextColumn::make('date')
-                ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('m-d-Y'))
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('m-d-Y')),
+                TextColumn::make('college.name')
         ];
     }
 }

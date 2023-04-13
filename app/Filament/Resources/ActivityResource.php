@@ -6,6 +6,7 @@ use App\Filament\Resources\ActivityResource\Pages;
 use App\Filament\Resources\ActivityResource\RelationManagers;
 use App\Models\Activity;
 use App\Models\Role;
+use App\Models\College;
 use App\Models\Section;
 use App\Models\User;
 use Carbon\Carbon;
@@ -98,6 +99,19 @@ class ActivityResource extends Resource
             RelationManagers\EvaluationFormsRelationManager::class,
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $user = User::find(auth()->user()->id);
+        if($user->role_id == Role::firstWhere('role','Dean')->id){
+            $college = College::firstWhere('dean_id', auth()->user()->id);
+            return static::getModel()::where('college_id',$college->id);
+        }
+
+        // dd(auth()->user());
+        return static::getModel()::query();
+    }
+
     public static function getPages(): array
     {
         return [

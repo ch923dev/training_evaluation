@@ -19,6 +19,6 @@ class College extends Model
     }
     public function dean()
     {
-        return $this->belongsTo(User::class, 'id', 'dean_id');
+        return $this->belongsTo(User::class, 'dean_id');
     }
 }
