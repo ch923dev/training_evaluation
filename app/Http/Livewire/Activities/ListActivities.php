@@ -47,21 +47,20 @@ class ListActivities extends Component implements HasTable
             Action::make('evaluate')
                 ->label('Evaluate')
                 ->action(function ($record, array $data) {
-                    if ($data['key'] !== $record->key) {
-                        Notification::make('evaluation_key_error')
-                            ->title('Evaluation Key Error')
-                            ->body('You must have put an invalid key')
-                            ->send();
-                    } else {
+                    // if ($data['key'] !== $record->key) {
+                    //     Notification::make('evaluation_key_error')
+                    //         ->title('Evaluation Key Error')
+                    //         ->body('You must have put an invalid key')
+                    //         ->send();
+                    // } else {
                         redirect(route('evaluation-form', ['activity' => $record]));
                        
-                    }
+                    // }
                 })
-                ->form([
-                    TextInput::make('key')
-                        ->required()
-                ])
-                
+                // ->form([
+                //     TextInput::make('key')
+                //         ->required()
+                // ])
                 ->button()
 
         ];

@@ -43,81 +43,88 @@ class Form extends Component implements Forms\Contracts\HasForms
     protected function getFormSchema(): array
     {
         return [
-            TextInput::make('title')
-                ->label('Title of Activity')
-                ->disabled(),
-            TextInput::make('created_at')
-                ->label('Date of Activity')
-                ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('m/d/Y'))
-                ->disabled(),
-            TextInput::make('facilitator')
-                ->label('Name of Speaker/Trainer/Facilitator')
-                ->disabled(),
-            TextInput::make('evaluator')
-                ->label('Name of Evaluator'),
-            TextInput::make('venue')
-                ->label('Venue of Activity')
-                ->disabled(),
+            TextInput::make('key')
+                ->reactive(),
+            Group::make([
+                TextInput::make('title')
+                    ->label('Title of Activity')
+                    ->disabled(),
+                TextInput::make('created_at')
+                    ->label('Date of Activity')
+                    ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('m/d/Y'))
+                    ->disabled(),
+                TextInput::make('facilitator')
+                    ->label('Name of Speaker/Trainer/Facilitator')
+                    ->disabled(),
+                TextInput::make('evaluator')
+                    ->label('Name of Evaluator'),
+                TextInput::make('venue')
+                    ->label('Venue of Activity')
+                    ->disabled(),
 
-            Card::make([
-                Placeholder::make('')
-                    ->content('5 - Excellent'),
-                Placeholder::make('')
-                    ->content('4 - Very Good'),
-                Placeholder::make('')
-                    ->content('3 - Good'),
-                Placeholder::make('')
-                    ->content('2 - Fair'),
-                Placeholder::make('')
-                    ->content('1 - Poor'),
-                Placeholder::make('')
-                    ->content('0 - Not Applicable'),
-            ])->columns(3),
-            Repeater::make('sections')
-                ->extraAttributes(['class' => 'border-transparent border-0 color-white'])
-                ->relationship('sections')
-                ->disableItemDeletion()
-                ->disableItemCreation()
-                ->schema([
-                    Placeholder::make('title')
-                        ->extraAttributes(['class' => 'font-extrabold text-xl'])
-                        ->content(fn ($record) => $record->title),
-                    Repeater::make('questions')
-                        ->label('')
-                        ->disableItemDeletion()
-                        ->disableItemCreation()
-                        ->relationship('questions')
-                        ->schema([
-                            Group::make([
-                                Placeholder::make('question')
-                                    ->content(fn ($record) => $record->question)
-                                    ->columnSpanFull(),
-                                Placeholder::make('')
-                                    ->columnSpan(1),
-                                Radio::make('answers_rating')
-                                    ->visible(fn ($record) => $record->type === 'rating')
-                                    ->label('Rating')
-                                    ->options([
-                                        '0' => '0',
-                                        '1' => '1',
-                                        '2' => '2',
-                                        '3' => '3',
-                                        '4' => '4',
-                                        '5' => '5',
-                                    ])
-                                    ->inline()
-                                    ->columnSpan(2),
-                            ])->columns(3),
-                            TextInput::make('answers_questions')
-                                ->label('Answer')
-                                ->visible(fn ($record) => $record->type != 'rating')
-                        ])
-                ]),
+                Card::make([
+                    Placeholder::make('')
+                        ->content('5 - Excellent'),
+                    Placeholder::make('')
+                        ->content('4 - Very Good'),
+                    Placeholder::make('')
+                        ->content('3 - Good'),
+                    Placeholder::make('')
+                        ->content('2 - Fair'),
+                    Placeholder::make('')
+                        ->content('1 - Poor'),
+                    Placeholder::make('')
+                        ->content('0 - Not Applicable'),
+                ])->columns(3),
+                Repeater::make('sections')
+                    ->extraAttributes(['class' => 'border-transparent border-0 color-white'])
+                    ->relationship('sections')
+                    ->disableItemDeletion()
+                    ->disableItemCreation()
+                    ->schema([
+                        Placeholder::make('title')
+                            ->extraAttributes(['class' => 'font-extrabold text-xl'])
+                            ->content(fn ($record) => $record->title),
+                        Repeater::make('questions')
+                            ->label('')
+                            ->disableItemDeletion()
+                            ->disableItemCreation()
+                            ->relationship('questions')
+                            ->schema([
+                                Group::make([
+                                    Placeholder::make('question')
+                                        ->content(fn ($record) => $record->question)
+                                        ->columnSpanFull(),
+                                    Placeholder::make('')
+                                        ->columnSpan(1),
+                                    Radio::make('answers_rating')
+                                        ->visible(fn ($record) => $record->type === 'rating')
+                                        ->label('Rating')
+                                        ->options([
+                                            '0' => '0',
+                                            '1' => '1',
+                                            '2' => '2',
+                                            '3' => '3',
+                                            '4' => '4',
+                                            '5' => '5',
+                                        ])
+                                        ->inline()
+                                        ->columnSpan(2),
+                                ])->columns(3),
+                                TextInput::make('answers_questions')
+                                    ->label('Answer')
+                                    ->visible(fn ($record) => $record->type != 'rating')
+                            ])
+                    ]),
 
-            TextInput::make('remarks'),
+                TextInput::make('remarks'),
+            ])->hidden(function ($get) {
+                
+                return $get('key') != $this->activity->key;
+            }),
         ];
     }
-    public function submit() 
+    public function submit()
     {
         $total_rating = 0;
         foreach ($this->sections as $value) {
@@ -160,13 +167,12 @@ class Form extends Component implements Forms\Contracts\HasForms
         ]);
         redirect(route('evaluation-list'));
     }
-    protected function getFormModel(): Activity 
+    protected function getFormModel(): Activity
     {
         return $this->activity;
     }
-    public function render() 
+    public function render()
     {
         return view('livewire.evaluations.form');
     }
-
 }
